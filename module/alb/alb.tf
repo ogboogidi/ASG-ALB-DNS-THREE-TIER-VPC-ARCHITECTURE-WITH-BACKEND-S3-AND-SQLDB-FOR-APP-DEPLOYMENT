@@ -33,14 +33,41 @@ resource "aws_lb_target_group" "luxe_tg" {
 
 
 #create listeners for ALB
-resource "aws_lb_listener" "luxe_listener" {
+resource "aws_lb_listener" "luxe_listener_HTTP" {
   load_balancer_arn = aws_lb.luxe_alb.arn
   port = "80"
   protocol = "HTTP"
 
   
   default_action {
+    type = "redirect"
+    redirect {
+      port = "443"
+      protocol = "HTTPS"
+      status_code = "HTTP_301" 
+    }
+  }
+}
+
+resource "aws_lb_listener" "luxe_listener_HTTPS" {
+  load_balancer_arn = aws_lb.luxe_alb.arn
+  port = "443"
+  protocol = "HTTPS"
+  ssl_policy = "ELBSecurityPolicy-2016-08"
+  certificate_arn = data.aws_acm_certificate.ssl_certificate.arn
+
+
+  default_action {
     type = "forward"
     target_group_arn = aws_lb_target_group.luxe_tg.arn
   }
+
+
+}
+
+data "aws_acm_certificate" "ssl_certificate" {
+  domain = "momentstravel.org"
+  most_recent = true
+  statuses = ["ISSUED"]
+  
 }
