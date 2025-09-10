@@ -9,3 +9,16 @@ output "public_subnets" {
   ]
 }
 
+output "luxe_private_subnets" {
+  value = {
+    1 = aws_subnet.luxe_private_subnet_03_AZ1a.id
+    2 = aws_subnet.luxe_private_subnet_05_AZ1b.id
+  }
+}
+
+output "luxe_db_subnets" {
+  value = [
+    aws_subnet.db_private_subnet_04_AZ1a.id,
+    aws_subnet.db_private_subnet_06_AZ1b.id
+  ]
+}
