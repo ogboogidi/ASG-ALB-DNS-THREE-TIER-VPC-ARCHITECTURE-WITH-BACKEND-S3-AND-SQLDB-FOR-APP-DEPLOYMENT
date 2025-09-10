@@ -29,3 +29,24 @@ variable "ami_id" {
 variable "instance_type" {
   type = string
 }
+
+#db variables
+variable "allocated_storage" {
+  type = number
+}
+
+variable "db_name" {
+  type = string
+}
+
+variable "instance_class" {
+  type = string
+}
+
+variable "username" {
+  type = string
+}
+
+variable "secret_name" {
+  type = string
+}
